@@ -9,7 +9,8 @@ import math
 APP_TITLE = "Kenya health Facilities Mapping"
 APP_SUBTITLE = "The map shows all of Kenya's health facilities with their  corresponding Levels and highlights Level 4"
 
-@st.cache
+
+@st.cache_data
 def load_data(string:str):
     """
     Load the data from the csv file
@@ -82,7 +83,7 @@ def display_map(hospy:pd.DataFrame, hospitals_gvt:pd.DataFrame,kms_chooser:int):
     return st_map
 
 
-@st.cache
+@st.cache_data
 def distances(hospitals_gvt:pd.DataFrame, facility_level, kms_chooser):
     level_4_hospitals = hospitals_gvt[hospitals_gvt['keph_level'] == facility_level]
     # Filter out Level 2 and Level 3 hospitals
@@ -149,95 +150,6 @@ def main():
     st.write(dd[0])
     metric_title3= f"The number of Level 4 Hospitals that have no Level 2 or 3 within a {kms_chooser} radius are:"
     st.metric(metric_title3, len(dd[1]))
-
-# # hospitals_gvt
-
-# center = [-0.023559, 37.9061928]
-
-# map_kenya = folium.Map(location=center, zoom_start=6)
-
-
-# level_chooser = int(input('Please put a number between 2 and 6: '))
-
-# km_chooser = int(input('Select a Radius of either 10, 15 or 20: '))*1000
-
-# if level_chooser == 2:
-#     hospitals_gvt = hospitals_gvt[hospitals_gvt.keph_level == 'Level 2']
-#     print(f"The number of Level {level_chooser} facilities are {hospitals_gvt.shape[0]}")
-
-
-# elif level_chooser == 3:
-#     hospitals_gvt = hospitals_gvt[hospitals_gvt.keph_level == 'Level 3']
-#     print(f"The number of Level {level_chooser} facilities are {hospitals_gvt.shape[0]}")
-
-# elif level_chooser == 4:
-    
-#     hosp = hospitals_gvt[hospitals_gvt.keph_level == 'Level 4']
-#     print(f"The number of Level {level_chooser} facilities are {hosp.shape[0]}")
-    
-#     for index, hosp in hosp.iterrows():
-#         location = [hosp['latitude'], hosp['longitude']]
-#         icon=folium.Icon(color='green')
-#         folium.Marker(location, 
-#                       icon = icon,
-#                       popup = f"Name: {hosp.facility} Keph Level: {hosp.keph_level}").add_to(map_kenya)
-        
-#         folium.Circle(location,
-#                     radius=km_chooser,
-#                     color = "green",
-#                     popup = f"{km_chooser}Radius, Name: {hosp.facility}, Keph Level: {hosp.keph_level}").add_to(map_kenya)
-    
-    
-
-# elif level_chooser == 5:
-    
-#     hosp = hospitals_gvt[hospitals_gvt.keph_level == 'Level 5']
-    
-#     for index, hosp in hosp.iterrows():
-#         location = [hosp['latitude'], hosp['longitude']]
-#         icon=folium.Icon(color='green')
-#         folium.Marker(location, 
-#                       icon=icon,
-#                     popup = f"Name: {hosp.facility} Keph Level: {hosp.keph_level}").add_to(map_kenya)
-#         folium.Circle(location,
-#                     radius=km_chooser,
-#                     color = "green",
-#                     popup = f"{km_chooser}Radius, Name: {hosp.facility}, Keph Level: {hosp.keph_level}").add_to(map_kenya)
-#     print(f"The number of Level {level_chooser} facilities are {hosp.shape[0]}")
-
-# elif level_chooser == 6:
-    
-#     hosp = hospitals_gvt[hospitals_gvt.keph_level == 'Level 6']
-#     print(f"The number of Level {level_chooser} facilities are {hosp.shape[0]}")
-    
-#     for index, hosp in hosp.iterrows():
-#         location = [hosp['latitude'], hosp['longitude']]
-#         icon=folium.Icon(color='green')
-#         folium.Marker(location, 
-#                     popup = f"Name: {hosp.facility} Keph Level: {hosp.keph_level}",
-#                      icon=icon).add_to(map_kenya)
-#         folium.Circle(location,
-#                     radius=km_chooser,
-#                     color = 'green',
-#                     popup = f"{km_chooser}Radius, Name: {hosp.facility}, Keph Level: {hosp.keph_level}").add_to(map_kenya)
-    
-# else: 
-#     print('Level Does Not exist or youve enterred a wrong value')
-    
-
-# hosp2 = hospitals_gvt[hospitals_gvt.keph_level != f'Level {level_chooser}']    
-# for index, hosp2 in hosp2.iterrows():
-#     location = [hosp2['latitude'], hosp2['longitude']]
-#     folium.Circle(location, 
-#                         radius=50,
-#                         popup = f"Name: {hosp2.facility} Keph Level: {hosp2.keph_level}").add_to(map_kenya)
-
-
-# map_kenya
-
-
-# # # save map to html file
-# # map_kenya.save('index.html')
 
 if __name__ == "__main__":
     main()
