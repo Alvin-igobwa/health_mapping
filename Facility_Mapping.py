@@ -85,37 +85,50 @@ def main():
     
     # county = 'Narok'                                                  to be added if need be
     metric_title = f"{facility_level} Facilities:"
-    metric_title2 = f"Total Number of Health Facilities is:"
+    metric_title2 = f"Total Number of Health Facilities in {county} is:"
 
     if kms_chooser == 10:
-        dd = hospy['10km_to_level4'].sum()
-        hh = hospy[hospy['10km_to_level4'] != 0]['facility']
+        dd = hospitals_gvt['10km_to_level4'].sum()
+        d1 = hospy['10km_to_level4'].sum()
+        hh = hospitals_gvt[hospitals_gvt['10km_to_level4'] != 0]['facility']
         hh.index = range(1, hh.shape[0]+1)
 
     elif kms_chooser == 15:
-        dd = hospy['15km_to_level4'].sum()
-        hh = hospy[hospitals_gvt['15km_to_level4'] != 0]['facility']
+        dd = hospitals_gvt['15km_to_level4'].sum()
+        d1 = hospy['15km_to_level4'].sum()
+
+        hh = hospitals_gvt[hospitals_gvt['15km_to_level4'] != 0]['facility']
         hh.index = range(1, hh.shape[0]+1)
     elif kms_chooser == 20:
-        dd = hospy['20km_to_level4'].sum()
-        hh = hospy[hospy['20km_to_level4'] != 0]['facility'].reset_index()
+        dd = hospitals_gvt['20km_to_level4'].sum()
+        d1 = hospy['20km_to_level4'].sum()
+
+        hh = hospitals_gvt[hospitals_gvt['20km_to_level4'] != 0]['facility'].reset_index()
         hh.index = range(1, hh.shape[0]+1)
 
 
-    metric_title3= f"""No of Level 4 Hospitals without Level 2 or 3 within {kms_chooser} radius are:"""
+    metric_title3= f"""Total Number of Level 4 far from level 2 and 3 at {kms_chooser} radius are:"""
     
     st.subheader(f"The Level 4 Health Facilities that do not have a level 2 or 3 health facility within the {kms_chooser}kms : are")
     st.write(hh)
     
     
-    st.subheader(f"Facts")
-    col1, col2, col3 = st.columns(3)
+    st.subheader(f"Nation Wide Facts")
+    col1, col2 = st.columns(2)
     with col1:
         st.metric(metric_title2, "{:,}".format(hospitals_gvt.shape[0]))
     with col2:
-        st.metric(metric_title, "{:,}".format(hospy.shape[0]))
-    with col3:
+        st.metric(metric_title, "{:,}".format(hospitals_gvt[hospitals_gvt['keph_level']=='Level 4'].shape[0]))
+    
+    st.subheader(f"Distance Metrics")
+    col1, col2 = st.columns(2)
+    with col1:
         st.metric(metric_title3, dd)
+    with col2:
+        st.metric(f"Total Number of Level 4  far from level 2 and 3 in {county} is:", d1)
+
+    
+    
 
 
     # DISPLAY FILTERS AND MAP
